@@ -1,0 +1,71 @@
+.list-container form {
+    flex-direction: row;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.list-container form input,
+.list-container form button {
+    padding: 6px 10px;
+    font-size: 1rem;
+}
+
+.list-container form .checkbox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.list-container form .checkbox input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+}
+
+.list-container table {
+    width: 70%;
+    margin: 0 auto;
+    border-collapse: collapse;
+    background: #fafafa;
+}
+
+.list-container th,
+.list-container td {
+    border: 1px solid #ddd;
+    padding: 8px 12px;
+    text-align: left;
+}
+
+.list-container th {
+    background: #f0f0f0;
+    font-weight: bold;
+}
+
+.list-container tr:nth-child(even) {
+    background: #f9f9f9;
+}
+
+.list-container tr .actions {
+    display: flex;
+    gap: 10px;
+}
+
+.list-container tr .actions .btn-confirm {
+    background: #28a745;
+    color: #fff;
+    border: none;
+    padding: 6px 10px;
+    cursor: pointer;
+}
+
+.list-container tr .actions .btn-danger {
+    background: #dc3545;
+    color: #fff;
+    border: none;
+    padding: 6px 10px;
+    cursor: pointer;
+}
+
+.list-container input[type="number"]::-webkit-inner-spin-button,
+.list-container input[type="number"]::-webkit-outer-spin-button {
+    margin: 0;
+}

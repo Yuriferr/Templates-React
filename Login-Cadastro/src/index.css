@@ -10,6 +10,13 @@ main{
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  padding: 30px;
+}
+
+section{
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
   justify-content: center;
   align-items: center;
 }
@@ -22,7 +29,7 @@ form{
   align-items: center;
   justify-content: center;
   margin: 0 auto;
-  gap: 10px;
+  gap: 20px;
   padding: 20px;
   border-radius: 10px;
   background-color: #fff;
@@ -34,7 +41,6 @@ input{
   padding: 10px;
   border-radius: 5px;
   border: 1px solid #ccc;
-  margin-bottom: 10px;
   font-size: 16px;
   transition: border-color 0.3s, box-shadow 0.3s;
 }
