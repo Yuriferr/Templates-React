@@ -46,10 +46,10 @@ export default function NavBar() {
             <p>{user.email}</p>
           </div>
         }
-        position="top left"
+        position="top center"
         closeOnDocumentClick
       >
-        <button onClick={handleLogout}>Sair</button>
+        <button className="closeButton" onClick={handleLogout}>Sair</button>
       </Popup>
     </nav>
   );
