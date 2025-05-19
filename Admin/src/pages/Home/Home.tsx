@@ -1,5 +1,4 @@
 import "./Home.css";
-import "reactjs-popup/dist/index.css";
 
 export default function Home() {
   return (
