@@ -1,14 +1,17 @@
 import { useState } from 'react';
 import Forms from '../Forms/Forms';
 import './TableList.css';
+
 interface Field {
     label: string;
     type: string;
 }
+
 interface TableListProps {
     title: string;
     data: Field[];
 }
+
 interface Item {
     id: number;
     [key: string]: any;
