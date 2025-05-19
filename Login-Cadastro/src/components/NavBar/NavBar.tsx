@@ -29,7 +29,7 @@ export default function NavBar() {
   }
 
   return (
-    <nav>
+    <nav className="NavBar">
       <div className="logo" onClick={() => navigate("/")}>
         <img src="https://placehold.co/400" alt="Logo" />
         <h2>Empresa</h2>

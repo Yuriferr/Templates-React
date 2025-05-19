@@ -2,7 +2,7 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import Home from './pages/Home/Home.tsx'
 import Login from './pages/Login/Login.tsx'
-import TableList from './pages/TableList/TableList.tsx'
+import TableList from './pages/TableList/ListPage.tsx'
 
 import MainLayout from './layouts/MainLayout.tsx'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
