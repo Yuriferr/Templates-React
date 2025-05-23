@@ -25,7 +25,7 @@ type SortConfig = {
     direction: 'asc' | 'desc';
 } | null;
 
-export default function TableList({ title, data, items: externalItems, showForm = true }: TableListProps) {
+export default function TableList({ title, data, items: externalItems }: TableListProps) {
     const [items, setItems] = useState<Item[]>(externalItems || []);
     const [editId, setEditId] = useState<number | string | null>(null);
     const [editForm, setEditForm] = useState<{ [key: string]: any }>({});

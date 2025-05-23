@@ -46,7 +46,7 @@ export default function ListPage() {
 
     return (
         <main className='list-container'>
-            <TableList {...tableConfig} items={items} showForm={false} />
+            <TableList {...tableConfig} items={items} />
         </main>
     );
 }
