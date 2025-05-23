@@ -64,6 +64,9 @@ export default function NavBar({ mark }: NavBarProps) {
         <li>
           <a href="/list">Lista</a>
         </li>
+        <li>
+          <a href="/dashboard">Dashboard</a>
+        </li>
       </ul>
       <Popup
         trigger={
