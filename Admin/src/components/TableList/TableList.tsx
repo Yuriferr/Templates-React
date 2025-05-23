@@ -5,12 +5,14 @@ import './TableList.css';
 interface Field {
     label: string;
     type: string;
+    display?: string;
 }
 
 interface TableListProps {
     title: string;
     data: Field[];
     items?: Item[];
+    showForm?: boolean;
 }
 
 interface Item {
@@ -24,13 +26,12 @@ type SortConfig = {
     direction: 'asc' | 'desc';
 } | null;
 
-export default function TableList({ title, data, items: externalItems }: TableListProps) {
+export default function TableList({ title, data, items: externalItems, showForm = true }: TableListProps) {
     const [items, setItems] = useState<Item[]>(externalItems || []);
     const [editId, setEditId] = useState<number | string | null>(null);
     const [editForm, setEditForm] = useState<{ [key: string]: any }>({});
     const [sortConfig, setSortConfig] = useState<SortConfig>(null);
 
-    // Atualiza os itens se vierem de fora
     useEffect(() => {
         if (externalItems) setItems(externalItems);
     }, [externalItems]);
@@ -39,9 +40,9 @@ export default function TableList({ title, data, items: externalItems }: TableLi
         const newItem: Item = {
             id: Date.now(),
             ...values,
-            editavel: values.editavel ?? true,
+            editavel: values.editavel ?? false,
         };
-        setItems([newItem, ...items]); // Adiciona no topo
+        setItems([newItem, ...items]);
     }
 
     function handleEditChange(label: string, value: any) {
@@ -93,9 +94,10 @@ export default function TableList({ title, data, items: externalItems }: TableLi
         });
     }
 
+    // Formulário inclui o campo "Permitir edição"
     const formFields = [
         ...visibleFields.map(field => ({
-            label: field.label,
+            label: field.display || field.label,
             name: field.label,
             type: field.type,
         })),
@@ -109,12 +111,14 @@ export default function TableList({ title, data, items: externalItems }: TableLi
     return (
         <div className='TableList'>
             <h2>{title}</h2>
-            <Forms
-                title=""
-                fields={formFields}
-                buttonLabel="Salvar"
-                onSubmit={handleAdd}
-            />
+            {showForm && (
+                <Forms
+                    title=""
+                    fields={formFields}
+                    buttonLabel="Salvar"
+                    onSubmit={handleAdd}
+                />
+            )}
             <table>
                 <thead>
                     <tr>
@@ -124,11 +128,10 @@ export default function TableList({ title, data, items: externalItems }: TableLi
                                 style={{ cursor: 'pointer' }}
                                 onClick={() => handleSort(field.label)}
                             >
-                                {field.label}
+                                {field.display || field.label}
                                 {sortConfig?.key === field.label ? (sortConfig.direction === 'asc' ? ' ▲' : ' ▼') : ''}
                             </th>
                         ))}
-                        <th>Permitir edição</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
@@ -154,15 +157,6 @@ export default function TableList({ title, data, items: externalItems }: TableLi
                                         </td>
                                     ))}
                                     <td>
-                                        <input
-                                            type="checkbox"
-                                            checked={!!editForm.editavel}
-                                            onChange={e =>
-                                                setEditForm({ ...editForm, editavel: e.target.checked })
-                                            }
-                                        />
-                                    </td>
-                                    <td>
                                         <button onClick={() => handleSave(item.id)}>Salvar</button>
                                         <button onClick={handleCancel}>Cancelar</button>
                                     </td>
@@ -172,9 +166,6 @@ export default function TableList({ title, data, items: externalItems }: TableLi
                                     {visibleFields.map(field => (
                                         <td key={field.label}>{item[field.label]}</td>
                                     ))}
-                                    <td>
-                                        <input type="checkbox" checked={!!item.editavel} disabled />
-                                    </td>
                                     <td>
                                         {item.editavel && (
                                             <button onClick={() => handleEdit(item)}>Editar</button>

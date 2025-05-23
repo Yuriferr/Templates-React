@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Popup from "reactjs-popup";
-import 'reactjs-popup/dist/index.css';
+import "reactjs-popup/dist/index.css";
 import "./NavBar.css";
 
 export default function NavBar() {
@@ -16,12 +16,10 @@ export default function NavBar() {
 
   useEffect(() => {
     const login = localStorage.getItem("login");
-    if (!login) {
-      navigate("/login");
-    } else {
+    if (login) {
       setUser(JSON.parse(login));
     }
-  }, [navigate]);
+  }, []);
 
   function handleLogout() {
     localStorage.removeItem("login");
@@ -49,7 +47,9 @@ export default function NavBar() {
         position="top center"
         closeOnDocumentClick
       >
-        <button className="closeButton" onClick={handleLogout}>Sair</button>
+        <button className="closeButton" onClick={handleLogout}>
+          Sair
+        </button>
       </Popup>
     </nav>
   );
