@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Forms from '../Forms/Forms';
 import './TableList.css';
 
@@ -10,18 +10,30 @@ interface Field {
 interface TableListProps {
     title: string;
     data: Field[];
+    items?: Item[];
 }
 
 interface Item {
-    id: number;
+    id: number | string;
     [key: string]: any;
-    editavel: boolean;
+    editavel?: boolean;
 }
 
-export default function TableList({ title, data }: TableListProps) {
-    const [items, setItems] = useState<Item[]>([]);
-    const [editId, setEditId] = useState<number | null>(null);
+type SortConfig = {
+    key: string;
+    direction: 'asc' | 'desc';
+} | null;
+
+export default function TableList({ title, data, items: externalItems }: TableListProps) {
+    const [items, setItems] = useState<Item[]>(externalItems || []);
+    const [editId, setEditId] = useState<number | string | null>(null);
     const [editForm, setEditForm] = useState<{ [key: string]: any }>({});
+    const [sortConfig, setSortConfig] = useState<SortConfig>(null);
+
+    // Atualiza os itens se vierem de fora
+    useEffect(() => {
+        if (externalItems) setItems(externalItems);
+    }, [externalItems]);
 
     function handleAdd(values: { [key: string]: any }) {
         const newItem: Item = {
@@ -29,7 +41,7 @@ export default function TableList({ title, data }: TableListProps) {
             ...values,
             editavel: values.editavel ?? true,
         };
-        setItems([...items, newItem]);
+        setItems([newItem, ...items]); // Adiciona no topo
     }
 
     function handleEditChange(label: string, value: any) {
@@ -41,7 +53,7 @@ export default function TableList({ title, data }: TableListProps) {
         setEditForm(item);
     }
 
-    function handleSave(id: number) {
+    function handleSave(id: number | string) {
         setItems(items.map(item =>
             item.id === id ? { ...item, ...editForm } : item
         ));
@@ -54,9 +66,35 @@ export default function TableList({ title, data }: TableListProps) {
         setEditForm({});
     }
 
-    // Campos para o Forms, incluindo o checkbox de edição
+    function handleSort(key: string) {
+        let direction: 'asc' | 'desc' = 'asc';
+        if (sortConfig && sortConfig.key === key && sortConfig.direction === 'asc') {
+            direction = 'desc';
+        }
+        setSortConfig({ key, direction });
+    }
+
+    // Remove o campo id das colunas exibidas
+    const visibleFields = data.filter(field => field.label !== 'id');
+
+    // Ordenação dos itens
+    let sortedItems = [...items];
+    if (sortConfig) {
+        sortedItems.sort((a, b) => {
+            const aValue = a[sortConfig.key];
+            const bValue = b[sortConfig.key];
+            if (aValue === undefined || bValue === undefined) return 0;
+            if (typeof aValue === 'number' && typeof bValue === 'number') {
+                return sortConfig.direction === 'asc' ? aValue - bValue : bValue - aValue;
+            }
+            return sortConfig.direction === 'asc'
+                ? String(aValue).localeCompare(String(bValue))
+                : String(bValue).localeCompare(String(aValue));
+        });
+    }
+
     const formFields = [
-        ...data.map(field => ({
+        ...visibleFields.map(field => ({
             label: field.label,
             name: field.label,
             type: field.type,
@@ -80,19 +118,26 @@ export default function TableList({ title, data }: TableListProps) {
             <table>
                 <thead>
                     <tr>
-                        {data.map(field => (
-                            <th key={field.label}>{field.label}</th>
+                        {visibleFields.map(field => (
+                            <th
+                                key={field.label}
+                                style={{ cursor: 'pointer' }}
+                                onClick={() => handleSort(field.label)}
+                            >
+                                {field.label}
+                                {sortConfig?.key === field.label ? (sortConfig.direction === 'asc' ? ' ▲' : ' ▼') : ''}
+                            </th>
                         ))}
                         <th>Permitir edição</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {items.map(item => (
+                    {sortedItems.map(item => (
                         <tr key={item.id}>
                             {editId === item.id ? (
                                 <>
-                                    {data.map(field => (
+                                    {visibleFields.map(field => (
                                         <td key={field.label}>
                                             <input
                                                 type={field.type}
@@ -124,7 +169,7 @@ export default function TableList({ title, data }: TableListProps) {
                                 </>
                             ) : (
                                 <>
-                                    {data.map(field => (
+                                    {visibleFields.map(field => (
                                         <td key={field.label}>{item[field.label]}</td>
                                     ))}
                                     <td>
