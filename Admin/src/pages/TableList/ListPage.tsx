@@ -36,7 +36,8 @@ export default function ListPage() {
                     servicos: item.servicos.map((s: any) => `${s.nome} (${s.nomeProfissional})`).join(', '),
                     mediaAvaliacaoServicos: item.mediaAvaliacaoServicos,
                     comentarioEstabelecimento: item.comentarioEstabelecimento,
-                    status: item.status
+                    status: item.status,
+                    editavel: false // Todos vindos da API não são editáveis
                 }));
                 setItems(mapped);
             })
@@ -45,7 +46,7 @@ export default function ListPage() {
 
     return (
         <main className='list-container'>
-            <TableList {...tableConfig} items={items} showForm={items.length > 0} />
+            <TableList {...tableConfig} items={items} showForm={false} />
         </main>
     );
 }

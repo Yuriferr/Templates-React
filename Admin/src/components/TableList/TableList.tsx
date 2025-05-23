@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import Forms from '../Forms/Forms';
 import './TableList.css';
 
 interface Field {
@@ -35,15 +34,6 @@ export default function TableList({ title, data, items: externalItems, showForm 
     useEffect(() => {
         if (externalItems) setItems(externalItems);
     }, [externalItems]);
-
-    function handleAdd(values: { [key: string]: any }) {
-        const newItem: Item = {
-            id: Date.now(),
-            ...values,
-            editavel: values.editavel ?? false,
-        };
-        setItems([newItem, ...items]);
-    }
 
     function handleEditChange(label: string, value: any) {
         setEditForm({ ...editForm, [label]: value });
@@ -94,31 +84,10 @@ export default function TableList({ title, data, items: externalItems, showForm 
         });
     }
 
-    // Formulário inclui o campo "Permitir edição"
-    const formFields = [
-        ...visibleFields.map(field => ({
-            label: field.display || field.label,
-            name: field.label,
-            type: field.type,
-        })),
-        {
-            label: "Permitir edição",
-            name: "editavel",
-            type: "checkbox"
-        }
-    ];
-
     return (
         <div className='TableList'>
             <h2>{title}</h2>
-            {showForm && (
-                <Forms
-                    title=""
-                    fields={formFields}
-                    buttonLabel="Salvar"
-                    onSubmit={handleAdd}
-                />
-            )}
+            {/* Formulário removido, pois showForm é false */}
             <table>
                 <thead>
                     <tr>
