@@ -4,7 +4,6 @@ import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
 import "./NavBar.css";
 import axios from "axios";
-
 interface NavBarProps {
   mark: string;
 }
