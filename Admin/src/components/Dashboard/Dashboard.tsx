@@ -1,6 +1,67 @@
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import './Dashboard.css';
 
+interface Resumo {
+    mediaEstabelecimento: number;
+    clientesAvaliando: number;
+    totalComentarios: number;
+    melhorProfissional: string;
+}
+
+interface Ranking {
+    nome: string;
+    nota: number;
+    totalAvaliacoes: number;
+}
+
+interface Avaliacao {
+    categoria: string;
+    nota: number;
+    comentario: string;
+    cliente: string;
+}
+
 export default function Dashboard() {
+    const [resumo, setResumo] = useState<Resumo>({
+        mediaEstabelecimento: 0,
+        clientesAvaliando: 0,
+        totalComentarios: 0,
+        melhorProfissional: ''
+    });
+    const [ranking, setRanking] = useState<Ranking[]>([]);
+    const [avaliacoes, setAvaliacoes] = useState<Avaliacao[]>([]);
+
+    useEffect(() => {
+        const API_URL = import.meta.env.VITE_API_URL;
+
+        axios.get(`${API_URL}/resumo`)
+            .then(response => {
+                setResumo(response.data);
+            })
+            .catch(error => {
+                console.error('Erro ao buscar resumo:', error);
+            });
+
+        axios.get(`${API_URL}/ranking`)
+            .then(response => {
+                setRanking(response.data);
+            })
+            .catch(error => {
+                console.error('Erro ao buscar ranking:', error);
+            });
+
+        axios.get(`${API_URL}/resumoAvaliacoes`)
+            .then(response => {
+                setAvaliacoes(response.data);
+            })
+            .catch(error => {
+                console.error('Erro ao buscar avaliações:', error);
+            });
+    }, []);
+
+    const rankingTop3 = ranking.slice(0, 3);
+
     return (
         <div className="Dashboard">
             <h1>
@@ -10,20 +71,20 @@ export default function Dashboard() {
                 <div>
                     <span>Média Estabelecimento</span>
                     <p className="Dashboard-value">
-                        4.6 <span style={{ color: '#FFD700' }}>⭐</span>
+                        {resumo.mediaEstabelecimento} <span style={{ color: '#FFD700' }}>⭐</span>
                     </p>
                 </div>
                 <div>
                     <span>Clientes Avaliando</span>
-                    <p className="Dashboard-value">182</p>
+                    <p className="Dashboard-value">{resumo.clientesAvaliando}</p>
                 </div>
                 <div>
                     <span>Total de Comentários</span>
-                    <p className="Dashboard-value">127</p>
+                    <p className="Dashboard-value">{resumo.totalComentarios}</p>
                 </div>
                 <div>
                     <span>Melhor Profissional</span>
-                    <p className="Dashboard-value" style={{ fontWeight: 700 }}>Almeida Teles</p>
+                    <p className="Dashboard-value" style={{ fontWeight: 700 }}>{resumo.melhorProfissional}</p>
                 </div>
             </section>
 
@@ -43,31 +104,21 @@ export default function Dashboard() {
             <section className="Dashboard-ranking">
                 <h2>Ranking de Profissionais</h2>
                 <div className="Dashboard-bars">
-                    <div>
-                        <span>Almeida Teles — 4.8</span>
-                        <div className="Dashboard-bar" style={{ width: '100%' }} />
-                    </div>
-                    <div>
-                        <span>Marcela Gomes — 4.7</span>
-                        <div className="Dashboard-bar" style={{ width: '98%' }} />
-                    </div>
-                    <div>
-                        <span>Jonas Lima — 4.5</span>
-                        <div className="Dashboard-bar" style={{ width: '94%' }} />
-                    </div>
-                    <div>
-                        <span>Tatiane Moura — 4.3</span>
-                        <div className="Dashboard-bar" style={{ width: '90%' }} />
-                    </div>
+                    {rankingTop3.map(profissional => (
+                        <div key={profissional.nome}>
+                            <span>{profissional.nome} — {profissional.nota}</span>
+                            <div className="Dashboard-bar" style={{ width: `${(profissional.nota / 5) * 100}%` }} />
+                        </div>
+                    ))}
                 </div>
             </section>
 
             <section className="Dashboard-recentes">
                 <h2>Avaliações Recentes</h2>
                 <ul>
-                    <li>⭐ 5 - "Excelente atendimento!" — Rebeca</li>
-                    <li>⭐ 4 - "Gostei muito, mas atrasou." — Carlos</li>
-                    <li>⭐ 3 - "Esperava mais." — Juliana</li>
+                    {avaliacoes.slice(0, 3).map((avaliacao, index) => (
+                        <li key={index}>⭐ {avaliacao.nota} - "{avaliacao.comentario}" — {avaliacao.cliente}</li>
+                    ))}
                 </ul>
             </section>
         </div>

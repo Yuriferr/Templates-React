@@ -4,11 +4,8 @@ import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
 import "./NavBar.css";
 import axios from "axios";
-interface NavBarProps {
-  mark: string;
-}
 
-export default function NavBar({ mark }: NavBarProps) {
+export default function NavBar() {
   const navigate = useNavigate();
   const [user, setUser] = useState({
     id: "",
@@ -31,8 +28,9 @@ export default function NavBar({ mark }: NavBarProps) {
   }, []);
 
   useEffect(() => {
+    const API_URL = import.meta.env.VITE_API_URL;
     axios
-      .get(`https://6830622ff504aa3c70f7997c.mockapi.io/api/v1/sac/${mark}`)
+      .get(`${API_URL}/empresa`) // Ajuste a rota conforme necessário
       .then((res) => {
         // Ajuste conforme o retorno real da API
         setEmpresa({
@@ -46,7 +44,7 @@ export default function NavBar({ mark }: NavBarProps) {
           caminhoLogo: "https://placehold.co/400",
         });
       });
-  }, [mark]);
+  }, []);
 
   function handleLogout() {
     localStorage.removeItem("login");

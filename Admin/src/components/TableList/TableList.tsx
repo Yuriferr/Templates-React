@@ -1,18 +1,19 @@
 import { useState, useEffect } from 'react';
-import './TableList.css';
+import axios from 'axios';
+import './TableList.css'
 
-interface Field {
-    label: string;
-    type: string;
-    display?: string;
-}
-
-interface TableListProps {
-    title: string;
-    data: Field[];
-    items?: Item[];
-    showForm?: boolean;
-}
+const tableConfig = {
+    title: "Avaliações",
+    entity: "reviews",
+    data: [
+        { label: "dataCriacao", type: "text", display: "Data" },
+        { label: "cliente", type: "text", display: "Cliente" },
+        { label: "servicos", type: "text", display: "Serviços" },
+        { label: "mediaAvaliacaoServicos", type: "number", display: "Média" },
+        { label: "comentarioEstabelecimento", type: "text", display: "Comentário" },
+        { label: "status", type: "text", display: "Status" }
+    ]
+};
 
 interface Item {
     id: number | string;
@@ -25,15 +26,30 @@ type SortConfig = {
     direction: 'asc' | 'desc';
 } | null;
 
-export default function TableList({ title, data, items: externalItems }: TableListProps) {
-    const [items, setItems] = useState<Item[]>(externalItems || []);
+export default function TableList() {
+    const API_URL = import.meta.env.VITE_API_URL || '';
+    const [items, setItems] = useState<Item[]>([]);
     const [editId, setEditId] = useState<number | string | null>(null);
     const [editForm, setEditForm] = useState<{ [key: string]: any }>({});
     const [sortConfig, setSortConfig] = useState<SortConfig>(null);
 
     useEffect(() => {
-        if (externalItems) setItems(externalItems);
-    }, [externalItems]);
+        axios.get(`${API_URL}/${tableConfig.entity}`)
+            .then(res => {
+                const mapped = res.data.map((item: any) => ({
+                    id: item.id,
+                    dataCriacao: item.dataCriacao ? new Date(item.dataCriacao).toLocaleString('pt-BR').replace(',', '') : '',
+                    cliente: item.cliente?.nome,
+                    servicos: item.servicos?.map((s: any) => `${s.nome} (${s.nomeProfissional})`).join(', '),
+                    mediaAvaliacaoServicos: item.mediaAvaliacaoServicos,
+                    comentarioEstabelecimento: item.comentarioEstabelecimento,
+                    status: item.status,
+                    editavel: false
+                }));
+                setItems(mapped);
+            })
+            .catch(() => setItems([]));
+    }, []);
 
     function handleEditChange(label: string, value: any) {
         setEditForm({ ...editForm, [label]: value });
@@ -65,10 +81,8 @@ export default function TableList({ title, data, items: externalItems }: TableLi
         setSortConfig({ key, direction });
     }
 
-    // Remove o campo id das colunas exibidas
-    const visibleFields = data.filter(field => field.label !== 'id');
+    const visibleFields = tableConfig.data.filter(field => field.label !== 'id');
 
-    // Ordenação dos itens
     let sortedItems = [...items];
     if (sortConfig) {
         sortedItems.sort((a, b) => {
@@ -86,8 +100,7 @@ export default function TableList({ title, data, items: externalItems }: TableLi
 
     return (
         <div className='TableList'>
-            <h2>{title}</h2>
-            {/* Formulário removido, pois showForm é false */}
+            <h2>{tableConfig.title}</h2>
             <table>
                 <thead>
                     <tr>
