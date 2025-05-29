@@ -1,7 +1,5 @@
 import './Dashboard.css'; // Certifique-se de que este arquivo CSS exista
 
-// Removido useState, useEffect, axios daqui
-
 export default function Dashboard({ resumo, ranking, avaliacoes }) {
     // A lógica de loading e error será tratada pela página pai
 
@@ -43,10 +41,9 @@ export default function Dashboard({ resumo, ranking, avaliacoes }) {
                 </div>
             </section>
 
-            <section className="Dashboard-tendencia">
+            {/* <section className="Dashboard-tendencia">
                 <h2>Tendência de Avaliações</h2>
                 <div>
-                    {/* Substitua por um componente de gráfico real se tiver um */}
                     <p>[Gráfico de linhas simulado - Implementar com biblioteca de gráficos]</p>
                     <ul>
                         <li>Mai - Estabelecimento: 4.5 | Profissionais: 4.4</li>
@@ -55,7 +52,7 @@ export default function Dashboard({ resumo, ranking, avaliacoes }) {
                         <li>Ago - Estabelecimento: 4.7 | Profissionais: 4.6</li>
                     </ul>
                 </div>
-            </section>
+            </section> */}
 
             <section className="Dashboard-ranking">
                 <h2>Ranking de Profissionais (Top 3)</h2>

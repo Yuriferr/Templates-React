@@ -29,6 +29,10 @@ export default function DashboardPage() {
                     axios.get(`${API_URL}/resumoAvaliacoes`) // Ajuste o endpoint se for diferente
                 ]);
 
+                console.log('Dados do resumo:', resumoRes.data);
+                console.log('Dados do ranking:', rankingRes.data);
+                console.log('Dados das avaliações:', avaliacoesRes.data);
+
                 setResumo(resumoRes.data);
                 setRanking(rankingRes.data);
                 setAvaliacoes(avaliacoesRes.data);
