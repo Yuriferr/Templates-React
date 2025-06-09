@@ -10,7 +10,30 @@ function formatDisplayLabel(key) {
     return result.charAt(0).toUpperCase() + result.slice(1);
 }
 
-export default function List() {
+// Função para corrigir acentuação e outros caracteres especiais
+function correctSpecialChars(text) {
+    if (typeof text !== 'string') return text;
+
+    const corrections = {
+        'Criacao': 'Criação',
+        'Ultima': 'Última',
+        'Avaliacao': 'Avaliação',
+        'Servicos': 'Serviços',
+        'Comentario': 'Comentário',
+        // Adicione outras correções conforme necessário
+    };
+
+    for (const incorrect in corrections) {
+        if (text.includes(incorrect)) {
+            text = text.replace(incorrect, corrections[incorrect]);
+        }
+    }
+
+    return text;
+}
+
+
+export default function Reviews() {
     const [listData, setListData] = useState([]);
     const [columns, setColumns] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -37,7 +60,7 @@ export default function List() {
                     const firstItem = data[0];
                     const generatedColumns = Object.keys(firstItem).map(key => ({
                         label: key,
-                        display: formatDisplayLabel(key), // Formata o nome da chave para exibição
+                        display: correctSpecialChars(formatDisplayLabel(key)), // Formata o nome da chave para exibição
                         sortable: true, // Habilita ordenação por padrão
                         render: (value, item) => { // Adicionado 'item' para acesso a outros campos se necessário
                             // Tratamento específico por chave

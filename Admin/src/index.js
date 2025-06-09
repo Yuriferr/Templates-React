@@ -4,11 +4,9 @@ import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import NavBar from "./components/NavBar/Navbar";
-
 import Home from "./pages/Home/Home";
 import Login from "./pages/Login/Login";
-import List from "./pages/List/List";
+import Reviews from "./pages/Reviews/Reviews";
 import Dashboard from "./pages/Dashboard/Dashboard";
 
 import MainLayout from "./MainLayout.js";
@@ -20,7 +18,7 @@ root.render(
         <Route path="/login" element={<Login />} />
         <Route element={<MainLayout />} >
           <Route path="/" element={<Home />} />
-          <Route path="/list" element={<List />} />
+          <Route path="/reviews" element={<Reviews />} />
           <Route path="/dashboard" element={<Dashboard />} />
         </Route>
       </Routes>

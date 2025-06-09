@@ -5,13 +5,16 @@ import "reactjs-popup/dist/index.css";
 import "./NavBar.css"; // Assuming you have a NavBar.css file
 import axios from "axios";
 
+import LogoPadrao from "../../images/logo.png"
+import User from "../../images/user.png"; // Importando imagem de usuário padrão
+
 export default function NavBar() {
   const navigate = useNavigate();
   const [user, setUser] = useState({}); // Simplificado para objeto vazio
 
   const [empresa, setEmpresa] = useState({
-    nomeEmpresa: "Empresa",
-    caminhoLogo: "https://placehold.co/400",
+    nomeEmpresa: "",
+    caminhoLogo: "",
   });
 
   useEffect(() => {
@@ -29,14 +32,14 @@ export default function NavBar() {
       .get(`${API_URL}/empresa`)
       .then((res) => {
         setEmpresa({
-          nomeEmpresa: res.data.nomeEmpresa || "Empresa",
-          caminhoLogo: res.data.caminhoLogo || "https://placehold.co/400",
+          nomeEmpresa: res.data.nomeEmpresa || "Salão Águas Claras",
+          caminhoLogo: res.data.caminhoLogo || LogoPadrao,
         });
       })
       .catch(() => {
         setEmpresa({
-          nomeEmpresa: "Empresa",
-          caminhoLogo: "https://placehold.co/400",
+          nomeEmpresa: "Salão Águas Claras",
+          caminhoLogo: LogoPadrao,
         });
       });
   }, []);
@@ -54,7 +57,7 @@ export default function NavBar() {
       </div>
       <ul>
         <li>
-          <a href="/list">Lista</a>
+          <a href="/reviews">Avaliações </a>
         </li>
         <li>
           <a href="/dashboard">Dashboard</a>
@@ -64,7 +67,7 @@ export default function NavBar() {
         trigger={
           <div className="user-info">
             {/* You might want to use user.avatar here if available */}
-            <img src={user.avatar || "https://placehold.co/400"} alt="Avatar" />
+            <img src={user.avatar || User} alt="Avatar" />
             <p>{user.email}</p>
           </div>
         }
