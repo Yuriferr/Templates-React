@@ -5,6 +5,10 @@
   font-family: 'Poppins', sans-serif;
 }
 
+body{
+  background-color: rgba(94, 16, 115, 0.1);
+}
+
 main{
   display: flex;
   flex-direction: column;

@@ -5,8 +5,11 @@ import "reactjs-popup/dist/index.css";
 import "./NavBar.css"; // Assuming you have a NavBar.css file
 import axios from "axios";
 
-import LogoPadrao from "../../images/logo.png"
+import LogoPadrao from "../../images/logo.png";
 import User from "../../images/user.png"; // Importando imagem de usuário padrão
+
+import { CiBoxList } from "react-icons/ci";
+import { IoAnalytics } from "react-icons/io5";
 
 export default function NavBar() {
   const navigate = useNavigate();
@@ -21,12 +24,12 @@ export default function NavBar() {
     const login = localStorage.getItem("login");
     if (login) {
       setUser(JSON.parse(login));
-    }else {
+    } else {
       navigate("/login");
     }
   }, []);
 
-   useEffect(() => {
+  useEffect(() => {
     const API_URL = import.meta.env.VITE_API_URL;
     axios
       .get(`${API_URL}/empresa`)
@@ -57,10 +60,16 @@ export default function NavBar() {
       </div>
       <ul>
         <li>
-          <a href="/reviews">Avaliações </a>
+          <a href="/reviews">
+            <CiBoxList className="icon" />
+            <p>Avaliações</p>
+          </a>
         </li>
         <li>
-          <a href="/dashboard">Dashboard</a>
+          <a href="/dashboard">
+            <IoAnalytics className="icon" />
+            <p>Dashboard</p>
+          </a>
         </li>
       </ul>
       <Popup

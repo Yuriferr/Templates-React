@@ -15,35 +15,44 @@
 
 .TableList table {
     width: 90%;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
     margin-top: 24px;
-    background: #fafafa;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
 
 .TableList th,
 .TableList td {
-    border: 1px solid #ccc;
-    padding: 12px 8px;
+    border: none;
+    padding: 16px;
     text-align: left;
     font-size: 1rem;
     color: #444;
+    border-bottom: 1px solid #eee;
+}
+
+.TableList tr:last-child td {
+    border-bottom: none;
 }
 
 .TableList th {
-    background: #f0f0f0;
+    background: #f9f9f9;
     font-weight: 600;
 }
 
 .TableList tr:nth-child(even) {
-    background: #f7f7f7;
+    background: #fff;
 }
 
 .TableList button {
-    padding: 6px 14px;
+    padding: 8px 16px;
     background: #333;
     color: #fff;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 1rem;
     margin-right: 6px;
@@ -57,16 +66,17 @@
 .TableList input[type="text"],
 .TableList input[type="number"] {
     width: 100%;
-    padding: 6px;
-    border: 1px solid #bbb;
-    border-radius: 4px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
     font-size: 1rem;
     background: #fff;
     color: #222;
 }
 
 .TableList input[type="checkbox"] {
-    accent-color: #888;
+    accent-color: #555;
     width: 18px;
     height: 18px;
+    cursor: pointer;
 }
