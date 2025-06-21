@@ -14,7 +14,7 @@ Este projeto é uma aplicação de painel administrativo construída com React. 
     *   **`pages/`**: Contém os componentes que representam as diferentes páginas/rotas da aplicação (ex: Login, List, DashboardPage).
     *   **`App.js`**: Componente principal que configura as rotas da aplicação.
     *   **`index.js`**: Ponto de entrada da aplicação React.
-*   **`.env`**: Arquivo para configurar variáveis de ambiente (ex: `REACT_APP_API_URL`).
+*   **`.env`**: Arquivo para configurar variáveis de ambiente (ex: `VITE_API_URL`).
 
 ## Como Usar o Projeto
 
