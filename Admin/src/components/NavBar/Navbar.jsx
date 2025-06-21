@@ -13,8 +13,8 @@ export default function NavBar() {
   const [user, setUser] = useState({}); // Simplificado para objeto vazio
 
   const [empresa, setEmpresa] = useState({
-    nomeEmpresa: "",
-    caminhoLogo: "",
+    nomeEmpresa: "Salão Águas Claras",
+    caminhoLogo: LogoPadrao,
   });
 
   useEffect(() => {
@@ -26,8 +26,8 @@ export default function NavBar() {
     }
   }, []);
 
-  useEffect(() => {
-    const API_URL = process.env.REACT_APP_API_URL;
+   useEffect(() => {
+    const API_URL = import.meta.env.VITE_API_URL;
     axios
       .get(`${API_URL}/empresa`)
       .then((res) => {

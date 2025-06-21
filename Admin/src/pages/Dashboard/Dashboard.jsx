@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import DashboardComponent from '../../components/Dashboard/Dashboard.js'; // Renomeado para evitar conflito de nome
+import DashboardComponent from '../../components/Dashboard/Dashboard'; // Renomeado para evitar conflito de nome
 
 export default function DashboardPage() {
     const [resumo, setResumo] = useState(null); // Inicializa como null para checar se já carregou
@@ -10,7 +10,7 @@ export default function DashboardPage() {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        const API_URL = process.env.REACT_APP_API_URL;
+        const API_URL = import.meta.env.VITE_API_URL;
 
         if (!API_URL) {
             console.error("REACT_APP_API_URL não está definida nas variáveis de ambiente.");

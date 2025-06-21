@@ -40,7 +40,7 @@ export default function Reviews() {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        const apiUrl = process.env.REACT_APP_API_URL;
+        const apiUrl = import.meta.env.VITE_API_URL;
         if (!apiUrl) {
             console.error("REACT_APP_API_URL não está definida nas variáveis de ambiente.");
             setError("Configuração de API ausente.");
